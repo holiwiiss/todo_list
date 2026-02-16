@@ -1,0 +1,92 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}
+
+body {
+  background-color: #0f1020;
+}
+
+.allTask__container {
+  border: 2px solid rgba(95, 95, 95, 0.199);
+  padding: 4rem;
+  border-radius: 36px;
+  background: radial-gradient(
+        circle at 50% 80%,  
+        rgba(29, 49, 127, 0.408), 
+        rgba(0, 0, 0, 0) 70%  
+    ),
+  linear-gradient(180deg, #0f1020, #050510);
+}
+h1, p {
+  color: #ffffffce;
+}
+
+.tarea__container {
+  display: flex;
+  flex-direction: row;
+  border-radius: 24px;
+  background-color: #ffffff05;
+  border: 2px solid rgba(95, 95, 95, 0.199);
+  justify-content: space-between;
+  padding: 1rem 1.5rem;
+  margin-top: 1rem;
+}
+
+.tarea__container--botones {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.empty__container {
+  color: #ffffffce;
+  padding: 3rem 0;
+}
+
+.empty__container p {
+  font-size: 18px;
+  margin: 0;
+}
+.empty__container h3 {
+  font-size: 32px;
+  margin: 0;
+}
