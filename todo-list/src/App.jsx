@@ -32,6 +32,9 @@ function App() {
   const [nombreTarea, setNombreTarea] = useState('')
   const [fechaTarea, setFechaTarea] = useState('')
   const [descripcionTarea, setDescripcionTarea] = useState('')
+  const [palabraBuscar, setPalabraBuscar] = useState('')
+  const [selectedValue, setSelectedValue] = useState('');
+  const [filtroTarea, setFiltroTarea] = useState('')
   const [numeroTareas, setNumeroTareas] = useState(0)
   const [showPopupAddTask, setShowPopupAddTask] = useState(false)
 
@@ -72,6 +75,23 @@ function App() {
     console.log(completeList)
   }
 
+  const handleChange = (e) => {
+    setSelectedValue(e.target.value);
+    setFiltroTarea(e.target.value)
+  };
+
+  const buscarTarea = (palabra) => {
+    console.log(palabra)
+    if(palabra === ''){
+      setPalabraBuscar('')
+      setFiltroTarea('')
+      return
+    }
+    setPalabraBuscar(palabra)
+    setFiltroTarea('buscador')
+    
+  }
+
   return (
     <>
 
@@ -79,17 +99,28 @@ function App() {
         <h1 className='todo-list__tittle'>Tu peak de productividad 🔥</h1>
 
         <div className='todo-list__options'>
-          <input type="text" onInput={(event) => setNombreTarea(event.target.value)} className='todo-list__options--search todo-list__input' placeholder='Introduce el nombre de tu tarea...'/> 
-          <button className='todo-list__options--filter todo-list__button'>Todas</button>
+          <input type="text" onInput={(event) => buscarTarea(event.target.value)} className='todo-list__options--search todo-list__input' placeholder='Busca tu tarea...'/> 
+
+          <select className='todo-list__options--filter todo-list__button' value={selectedValue} onChange={handleChange}>
+            <option value="">Todas</option>
+            <option value="completas">Completadas</option>
+            <option value="pendientes">Por hacer</option>
+          </select>
         </div>
         
           {listaTareas.length === 0 ? (
             <div className='todo-list__empty'>
-              <img src={triste} alt="Triste" className='todo-list__empty--img' />
+              <img src={triste} alt="Triste" className='todo-list__empty--img'/>
               <h3 className='todo-list__empty--title'>Tu lista de tareas esta vacía</h3>
               <p className='todo-list__empty--subtitle'>Empieza a cotizar</p>
             </div>
-            ) : (<ul className='todo-list__items'> {listaTareas.map((tarea, index) => (
+            ) : (<ul className='todo-list__items'> {
+              listaTareas.filter(tarea => {
+                if (filtroTarea === "completas") return tarea.complete;
+                if (filtroTarea === "pendientes") return !tarea.complete;
+                if (filtroTarea === "buscador") return (tarea.nombre).startsWith(palabraBuscar)
+                return true;
+          }).map((tarea, index) => (
             <TaskItem tareaName={tarea.nombre} tareaComplete={tarea.complete} tareaFecha={tarea.fecha} tareaDescripcion={tarea.descripcion} indexTarea={index} deleteTask={deleteTask} editTask={editTask} toggleStatusTask={toggleStatusTask}></TaskItem>
           ))}</ul>)}
 
@@ -119,10 +150,7 @@ function App() {
               </div>
 
               <button onClick={() => addTarea()} className='todo-list__button'>Añadir tarea</button>
-
             </div>
-
-
           </div>
 
         )}

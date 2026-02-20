@@ -54,6 +54,12 @@ h1, p, .todo-list__input, .todo-list__button, h3, h2 {
 }
 .todo-list__options--filter {
   width:calc(30% - 0.5rem);
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+.todo-list__options--filter option{
+  color: black;
 }
 
 .todo-list__input {
@@ -158,10 +164,6 @@ h1, p, .todo-list__input, .todo-list__button, h3, h2 {
   gap: 1rem;
 }
 
-.todo-list__checkbox {
-  display: none;  
-}
-
 .todo-list__checkbox-label {
   width: 20px;
   height: 20px;
@@ -170,19 +172,6 @@ h1, p, .todo-list__input, .todo-list__button, h3, h2 {
   cursor: pointer;
   position: relative;
   transition: all 0.2s;
-}
-
-.todo-list__checkbox:checked + .todo-list__checkbox-label::after {
-  content: '';
-  position: absolute;
-  top: 3px;
-  left: 6px;
-  
-  width: 6px;
-  height: 10px;
-  border: 2px solid #b23f3f;
-  border-width: 0 2px 2px 0;
-  transform: rotate(45deg);
 }
 
 .todo-list__task--description{
