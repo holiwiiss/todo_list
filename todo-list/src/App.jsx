@@ -4,7 +4,7 @@ import viteLogo from '/vite.svg'
 import triste from './assets/triste.png'
 import './App.css'
 
-function TaskItem({tareaName, tareaComplete , indexTarea, deleteTask, editTask, toggleStatusTask}){
+function TaskItem({tareaName, tareaComplete, tareaFecha, tareaDescripcion, indexTarea, deleteTask, editTask, toggleStatusTask}){
 
   return (
     <li key={indexTarea} onClick={() => toggleStatusTask(indexTarea)} className={`todo-list__task ${tareaComplete ? 'todo-list__task--completed' : ''}`}>
@@ -13,9 +13,9 @@ function TaskItem({tareaName, tareaComplete , indexTarea, deleteTask, editTask, 
         <div className='todo-list__task--description'>
           <div className='todo-list__row'>
             <h3 className='todo-list__task--description--title'>{tareaName}</h3>
-            <p className='todo-list__task--description--date'>12/02/2025</p>
+            <p className='todo-list__task--description--date'>{tareaFecha}</p>
           </div>
-          <p className='todo-list__task--description--description'>Esto es una breve description de la tarea </p>
+          <p className='todo-list__task--description--description'>{tareaDescripcion} </p>
         </div>
       </div>
       <div className='todo-list__task-buttons'>
@@ -30,18 +30,18 @@ function App() {
 
   const [listaTareas, setListaTareas] = useState([])
   const [nombreTarea, setNombreTarea] = useState('')
+  const [fechaTarea, setFechaTarea] = useState('')
+  const [descripcionTarea, setDescripcionTarea] = useState('')
   const [numeroTareas, setNumeroTareas] = useState(0)
   const [showPopupAddTask, setShowPopupAddTask] = useState(false)
 
   const addTarea = () => {
     if(nombreTarea===""){return}
-    const newList = [...listaTareas, {nombre: nombreTarea, complete:false}]
+
+    const newList = [...listaTareas, {nombre: nombreTarea, complete:false, fecha: fechaTarea, descripcion: descripcionTarea}]
     setListaTareas(newList)
     setNumeroTareas(newList.length)
-  }
-
-  const getNameTarea = (value) => {
-    setNombreTarea(value)
+    setShowPopupAddTask(false)
   }
 
   const deleteTask = (event, indexTarea) => {
@@ -79,8 +79,8 @@ function App() {
         <h1 className='todo-list__tittle'>Tu peak de productividad 🔥</h1>
 
         <div className='todo-list__options'>
-          <input type="text" onInput={(event) => getNameTarea(event.target.value)} className='todo-list__options--search todo-list__input' placeholder='Introduce el nombre de tu tarea...'/> 
-          <button onClick={() => addTarea()} className='todo-list__options--filter todo-list__button'>Añadir tarea</button>
+          <input type="text" onInput={(event) => setNombreTarea(event.target.value)} className='todo-list__options--search todo-list__input' placeholder='Introduce el nombre de tu tarea...'/> 
+          <button className='todo-list__options--filter todo-list__button'>Todas</button>
         </div>
         
           {listaTareas.length === 0 ? (
@@ -90,7 +90,7 @@ function App() {
               <p className='todo-list__empty--subtitle'>Empieza a cotizar</p>
             </div>
             ) : (<ul className='todo-list__items'> {listaTareas.map((tarea, index) => (
-            <TaskItem tareaName={tarea.nombre} tareaComplete={tarea.complete} indexTarea={index} deleteTask={deleteTask} editTask={editTask} toggleStatusTask={toggleStatusTask}></TaskItem>
+            <TaskItem tareaName={tarea.nombre} tareaComplete={tarea.complete} tareaFecha={tarea.fecha} tareaDescripcion={tarea.descripcion} indexTarea={index} deleteTask={deleteTask} editTask={editTask} toggleStatusTask={toggleStatusTask}></TaskItem>
           ))}</ul>)}
 
           <button className='todo-list__delete--button todo-list__button' onClick={() => deleteAllTasks()}>Borrar todas las tareas ({numeroTareas})</button>
@@ -109,13 +109,13 @@ function App() {
 
               <div className='popUpAdd__container--form'>
                 <label>Nombre*</label>
-                <input type='text' className='todo-list__input popUpAdd__container--input' placeholder='Introduce el nombre de tu tarea'></input>
+                <input type='text' className='todo-list__input popUpAdd__container--input' onInput={(event) => setNombreTarea(event.target.value)} placeholder='Introduce el nombre de tu tarea' required></input>
 
                 <label>Fecha limite*</label>
-                <input type='date' className='todo-list__input popUpAdd__container--input'></input>
+                <input type='date' className='todo-list__input popUpAdd__container--input' onInput={(event) => setFechaTarea(event.target.value)} required></input>
 
                 <label>Descripcion</label>
-                <input type='text' className='todo-list__input popUpAdd__container--input' placeholder='Introduce una descripcion'></input>
+                <input type='text' className='todo-list__input popUpAdd__container--input' onInput={(event) => setDescripcionTarea(event.target.value)} placeholder='Introduce una descripcion'></input>
               </div>
 
               <button onClick={() => addTarea()} className='todo-list__button'>Añadir tarea</button>

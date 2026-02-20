@@ -150,9 +150,8 @@ h1, p, .todo-list__input, .todo-list__button, h3, h2 {
   display: flex;
   align-items: center;
   gap: 1rem;
+  flex: 1;
 }
-
-
 .todo-list__task-buttons {
   display: flex;
   align-items: center;
