@@ -12,7 +12,9 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-
+* {
+  box-sizing: border-box;
+}
 a {
   font-weight: 500;
   color: #646cff;
@@ -40,4 +42,3 @@ h1 {
 .todo-list__button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
-

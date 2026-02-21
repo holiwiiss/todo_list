@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { sileo, Toaster } from "sileo";
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import triste from './assets/triste.png'
@@ -37,14 +38,62 @@ function App() {
   const [filtroTarea, setFiltroTarea] = useState('')
   const [numeroTareas, setNumeroTareas] = useState(0)
   const [showPopupAddTask, setShowPopupAddTask] = useState(false)
+  const [erroresPopUpAddTask, setErroresPopUpAddTask] = useState(['',''])
+
 
   const addTarea = () => {
-    if(nombreTarea===""){return}
+    const erroresDefinitivos = [...erroresPopUpAddTask]
+    
+    if(nombreTarea===""){
+      erroresDefinitivos[0] = 'Introduce un nombre valido'
+      setErroresPopUpAddTask(erroresDefinitivos)
+      sileo.error({
+        title: "No se puede crear la tarea",
+        description: "Introduce un nombre valido",
+        fill: "#171717",
+      });
+      return
+    }
+    erroresDefinitivos[0]= ''
+    setErroresPopUpAddTask(erroresDefinitivos)
+
+    if(fechaTarea===""){
+      erroresDefinitivos[1] = 'Introduce una fecha valida'
+      setErroresPopUpAddTask(erroresDefinitivos)
+      sileo.error({
+        title: "No se puede crear la tarea",
+        description: "Introduce una fecha valida",
+        fill: "#171717",
+      });
+
+      return
+    }else {
+      const hoy = new Date()
+      hoy.setHours(0, 0, 0, 0)
+      const fechaElegida = new Date(fechaTarea)
+
+      if (fechaElegida < hoy) {
+        erroresDefinitivos[1] = 'La fecha no puede ser anterior a hoy'
+        setErroresPopUpAddTask(erroresDefinitivos)
+        sileo.error({
+          title: "No se puede crear la tarea",
+          description: "Introduce una fecha valida",
+          fill: "#171717",
+        });
+        return
+      }
+    }
+    erroresDefinitivos[1]= ''
+    setErroresPopUpAddTask(erroresDefinitivos)
 
     const newList = [...listaTareas, {nombre: nombreTarea, complete:false, fecha: fechaTarea, descripcion: descripcionTarea}]
     setListaTareas(newList)
     setNumeroTareas(newList.length)
     setShowPopupAddTask(false)
+    sileo.success({ 
+      title: "Tarea añadida",
+      fill: "#171717",
+    });
   }
 
   const deleteTask = (event, indexTarea) => {
@@ -53,6 +102,10 @@ function App() {
     completeList.splice(indexTarea, 1)
     setListaTareas(completeList)
     setNumeroTareas(completeList.length)
+    sileo.success({ 
+      title: "Tarea borrada",
+      fill: "#171717",
+    });
   }
 
   const editTask = (event, indexTarea, nuevoNombre) => {
@@ -60,12 +113,20 @@ function App() {
     const completeList = [...listaTareas]
     completeList[indexTarea].nombre =  nuevoNombre
     setListaTareas(completeList)
+    sileo.success({ 
+      title: "Tarea editada",
+      fill: "#171717",
+    });
   }
 
   const deleteAllTasks = () => {
     const deleteList = []
     setListaTareas(deleteList)
     setNumeroTareas(deleteList.length)
+    sileo.success({ 
+      title: "Todas las tareas borradas",
+      fill: "#171717",
+    });
   }
 
   const toggleStatusTask = (indexTarea) => {
@@ -94,6 +155,7 @@ function App() {
 
   return (
     <>
+      
 
       <div className='todo-list'>
         <h1 className='todo-list__tittle'>Tu peak de productividad 🔥</h1>
@@ -124,7 +186,7 @@ function App() {
             <TaskItem tareaName={tarea.nombre} tareaComplete={tarea.complete} tareaFecha={tarea.fecha} tareaDescripcion={tarea.descripcion} indexTarea={index} deleteTask={deleteTask} editTask={editTask} toggleStatusTask={toggleStatusTask}></TaskItem>
           ))}</ul>)}
 
-          <button className='todo-list__delete--button todo-list__button' onClick={() => deleteAllTasks()}>Borrar todas las tareas ({numeroTareas})</button>
+          <button className='todo-list__delete--button todo-list__button' onClick={() => deleteAllTasks()}>Borrar todas las tareas ({listaTareas.length})</button>
           <button className='todo-list__btn--anyadir' onClick={() => setShowPopupAddTask(true)}>+</button>
         </div>
 
@@ -141,9 +203,11 @@ function App() {
               <div className='popUpAdd__container--form'>
                 <label>Nombre*</label>
                 <input type='text' className='todo-list__input popUpAdd__container--input' onInput={(event) => setNombreTarea(event.target.value)} placeholder='Introduce el nombre de tu tarea' required></input>
+                <span className='error__form'>{erroresPopUpAddTask[0]}</span>
 
                 <label>Fecha limite*</label>
                 <input type='date' className='todo-list__input popUpAdd__container--input' onInput={(event) => setFechaTarea(event.target.value)} required></input>
+                <span className='error__form'>{erroresPopUpAddTask[1]}</span>
 
                 <label>Descripcion</label>
                 <input type='text' className='todo-list__input popUpAdd__container--input' onInput={(event) => setDescripcionTarea(event.target.value)} placeholder='Introduce una descripcion'></input>
@@ -155,7 +219,7 @@ function App() {
 
         )}
 
-        
+        <Toaster position="top-right" />
     </>
   )
 }

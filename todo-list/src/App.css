@@ -289,3 +289,10 @@ h1, p, .todo-list__input, .todo-list__button, h3, h2 {
 .popUpAdd__container--input {
   margin-bottom: 0.5rem;
 }
+
+.error__form {
+  margin-top: -0.5rem;
+  font-size: 12px;
+  color: #bc3c3c;
+  margin-bottom: 0.5rem;
+}
