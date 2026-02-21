@@ -1,16 +1,60 @@
-# React + Vite
+# ✅ Peak Productivity — To-Do List App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Una aplicación de gestión de tareas construida con React como proyecto de aprendizaje. Interfaz limpia, CSS propio y responsive.
 
-Currently, two official plugins are available:
+![App Preview](./src/assets/preview.png)
+> *Captura de la todo list en funcionamiento*
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## React Compiler
+## 🚀 Tecnologías
 
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
+- **React** + **Vite** — estructura y bundling
+- **Sileo** — notificaciones Toast animadas
+- **CSS vanilla** — estilos 100% propios, sin librerías UI, completamente responsive
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## ✨ Funcionalidades
+
+- ➕ Añadir tareas con nombre, fecha límite y descripción opcional
+- ✔️ Marcar tareas como completadas
+- 🗑️ Borrar tareas individuales o todas a la vez
+- 🔍 Buscador en tiempo real por nombre
+- 🔽 Filtrado por estado: todas, completadas o pendientes
+- 📅 Validación de formulario
+- 🔔 Feedback visual con toasts animados en cada acción
+
+---
+
+## 📦 Instalación
+
+```bash
+git clone https://github.com/tu-usuario/tu-repo.git
+cd tu-repo
+npm install
+npm run dev
+```
+
+---
+
+## 🗂️ Estructura
+
+```
+src/
+├── App.jsx         # Componente principal y lógica de estado
+├── App.css         # Estilos globales responsive
+└── assets/         # Imágenes y recursos estáticos
+```
+
+---
+
+## 🧠 Aprendizajes clave
+
+Este proyecto fue construido para practicar:
+- Gestión de estado con `useState`
+- Comunicación entre componentes padre e hijo via props
+- Validación de formularios en React
+- Filtrado y búsqueda de listas dinámicas
+
+---
