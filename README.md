@@ -30,8 +30,8 @@ Una aplicación de gestión de tareas construida con React como proyecto de apre
 ## 📦 Instalación
 
 ```bash
-git clone https://github.com/tu-usuario/tu-repo.git
-cd tu-repo
+git clone https://github.com/holiwiiss/todo_list
+cd todo-list
 npm install
 npm run dev
 ```

@@ -94,6 +94,8 @@ h1, p, .todo-list__input, .todo-list__button, h3, h2 {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
+  flex: 1;
 }
 
 .todo-list__empty--img {
@@ -222,6 +224,14 @@ h1, p, .todo-list__input, .todo-list__button, h3, h2 {
   font-size: 32px;
   border-radius: 99px;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.todo-list__btn--anyadir img{
+  width: 35px;
+  height: 35px;
 }
 
 .todo-list__items::-webkit-scrollbar {
@@ -278,6 +288,11 @@ h1, p, .todo-list__input, .todo-list__button, h3, h2 {
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+}
+.popUpAdd__container--close {
+  height: 35px;
+  width: 35px;
+  cursor: pointer;
 }
 
 .popUpAdd__container--form {
