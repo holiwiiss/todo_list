@@ -9,14 +9,14 @@ import PopUpItem from './components/PopUpItem';
 
 function App() {
 
-  const [listaTareas, setListaTareas] = useState([])
-  const [palabraBuscar, setPalabraBuscar] = useState('')
-  const [filtroTarea, setFiltroTarea] = useState('')
+  const [taskList, setTaskList] = useState([])
+  const [searchWord, setSearchWord] = useState('')
+  const [taskFilter, setTaskFilter] = useState('')
   const [showPopupAddTask, setShowPopupAddTask] = useState(false)
   
-  const addTarea = (name, date, description) => {
-    const newList = [...listaTareas, {nombre: name, complete:false, fecha: date, descripcion: description}]
-    setListaTareas(newList)
+  const addTask = (name, date, description) => {
+    const newList = [...taskList, {name: name, complete:false, date: date, description: description}]
+    setTaskList(newList)
     setShowPopupAddTask(false)
     sileo.success({ 
       title: "Tarea añadida",
@@ -24,22 +24,23 @@ function App() {
     });
   }
 
-  const deleteTask = (event, indexTarea) => {
+  const deleteTask = (event, taskIndex) => {
     event.stopPropagation()
-    const completeList = [...listaTareas]
-    completeList.splice(indexTarea, 1)
-    setListaTareas(completeList)
+    const listUpdate = [...taskList]
+    listUpdate.splice(taskIndex, 1)
+    setTaskList(listUpdate)
+
     sileo.success({ 
       title: "Tarea borrada",
       fill: "#171717",
     });
   }
 
-  const editTask = (event, indexTarea, nuevoNombre) => {
+  const editTask = (event, taskIndex, newName) => {
     event.stopPropagation()
-    const completeList = [...listaTareas]
-    completeList[indexTarea].nombre =  nuevoNombre
-    setListaTareas(completeList)
+    const listUpdate = [...taskList]
+    listUpdate[taskIndex].name =  newName
+    setTaskList(listUpdate)
     sileo.success({ 
       title: "Tarea editada",
       fill: "#171717",
@@ -47,34 +48,33 @@ function App() {
   }
 
   const deleteAllTasks = () => {
-    const deleteList = []
-    setListaTareas(deleteList)
+    const listUpdate = []
+    setTaskList(listUpdate)
     sileo.success({ 
       title: "Todas las tareas borradas",
       fill: "#171717",
     });
   }
 
-  const toggleStatusTask = (indexTarea) => {
-    const completeList = [...listaTareas]
-    completeList[indexTarea].complete= !completeList[indexTarea].complete
-    const toggleTask = completeList[indexTarea]
+  const toggleStatusTask = (taskIndex) => {
+    const listUpdate = [...taskList]
+    listUpdate[taskIndex].complete= !listUpdate[taskIndex].complete
+    const toggleTask = listUpdate[taskIndex]
 
-    completeList.splice(indexTarea, 1)
-    toggleTask.complete ? completeList.push(toggleTask) : completeList.unshift(toggleTask)
+    listUpdate.splice(taskIndex, 1)
+    toggleTask.complete ? listUpdate.push(toggleTask) : listUpdate.unshift(toggleTask)
 
-    setListaTareas(completeList)
+    setTaskList(listUpdate)
   }
 
-  const buscarTarea = (palabra) => {
-    console.log(palabra)
-    if(palabra === ''){
-      setPalabraBuscar('')
-      setFiltroTarea('')
+  const searchTask = (word) => {
+    if(word === ''){
+      setSearchWord('')
+      setTaskFilter('')
       return
     }
-    setPalabraBuscar(palabra)
-    setFiltroTarea('buscador')
+    setSearchWord(word)
+    setTaskFilter('buscador')
     
   }
 
@@ -85,37 +85,37 @@ function App() {
         <h1 className='todo-list__tittle'>Tu peak de productividad 🔥</h1>
 
         <div className='todo-list__options'>
-          <input type="text" onInput={(event) => buscarTarea(event.target.value)} className='todo-list__options--search todo-list__input' placeholder='Busca tu tarea...'/> 
+          <input type="text" onInput={(event) => searchTask(event.target.value)} className='todo-list__options--search todo-list__input' placeholder='Busca tu tarea...'/> 
 
-          <select className='todo-list__options--filter todo-list__button' onChange={(event) => setFiltroTarea(event.target.value)}>
+          <select className='todo-list__options--filter todo-list__button' onChange={(event) => setTaskFilter(event.target.value)}>
             <option value="">Todas</option>
             <option value="completas">Completadas</option>
             <option value="pendientes">Por hacer</option>
           </select>
         </div>
         
-        {listaTareas.length === 0 ? (
+        {taskList.length === 0 ? (
           <div className='todo-list__empty'>
             <img src={triste} alt="Triste" className='todo-list__empty--img'/>
             <h3 className='todo-list__empty--title'>Tu lista de tareas esta vacía</h3>
             <p className='todo-list__empty--subtitle'>Empieza a cotizar</p>
           </div>
         ) : (<ul className='todo-list__items'> {
-            listaTareas.filter(tarea => {
-              if (filtroTarea === "completas") return tarea.complete;
-              if (filtroTarea === "pendientes") return !tarea.complete;
-              if (filtroTarea === "buscador") return (tarea.nombre).startsWith(palabraBuscar);
+            taskList.filter(task => {
+              if (taskFilter === "completas") return task.complete;
+              if (taskFilter === "pendientes") return !task.complete;
+              if (taskFilter === "buscador") return (task.name).startsWith(searchWord);
               return true;
-            }).map((tarea, index) => (
-          <TaskItem tareaName={tarea.nombre} tareaComplete={tarea.complete} tareaFecha={tarea.fecha} tareaDescripcion={tarea.descripcion} indexTarea={index} deleteTask={deleteTask} editTask={editTask} toggleStatusTask={toggleStatusTask}></TaskItem>
+            }).map((task, index) => (
+          <TaskItem taskName={task.name} taskComplete={task.complete} taskDate={task.date} taskDescription={task.description} taskIndex={index} deleteTask={deleteTask} editTask={editTask} toggleStatusTask={toggleStatusTask}></TaskItem>
         ))}</ul>)}
 
-        <button className='todo-list__delete--button todo-list__button' onClick={() => deleteAllTasks()}>Borrar todas las tareas ({listaTareas.length})</button>
+        <button className='todo-list__delete--button todo-list__button' onClick={() => deleteAllTasks()}>Borrar todas las tareas ({taskList.length})</button>
         <button className='todo-list__btn--anyadir' onClick={() => setShowPopupAddTask(true)}><img src={add_icon}></img></button>
       </div>
 
       {showPopupAddTask && (
-        <PopUpItem setShowPopupAddTask={setShowPopupAddTask} addTarea={addTarea}></PopUpItem>
+        <PopUpItem setShowPopupAddTask={setShowPopupAddTask} addTask={addTask}></PopUpItem>
       )}
 
       <Toaster position="top-right" />

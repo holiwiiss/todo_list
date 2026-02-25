@@ -1,48 +1,49 @@
 import close_icon from '../assets/icon_close.png'
 import { useState } from 'react'
+import { sileo, Toaster } from "sileo";
 
-function PopUpItem ({setShowPopupAddTask, addTarea}) {
+function PopUpItem ({setShowPopupAddTask, addTask}) {
 
-  const [nombreTarea, setNombreTarea] = useState('')
-  const [fechaTarea, setFechaTarea] = useState('')
-  const [descripcionTarea, setDescripcionTarea] = useState('')
-  const [erroresPopUpAddTask, setErroresPopUpAddTask] = useState({errorName: '', errorDate: ''})
+  const [taskName, setTaskName] = useState('')
+  const [taskDate, setTaskDate] = useState('')
+  const [taskDescription, setTaskDescription] = useState('')
+  const [errorPopUpAddTask, setErrorPopUpAddTask] = useState({errorName: '', errorDate: ''})
 
   const verifyInputs = () => {
 
-    const erroresDefinitivos = {...erroresPopUpAddTask}
-    let contador = 0
+    const errorsUpdate = {...errorPopUpAddTask}
+    let cont = 0
 
     //comprobar si el nombre de la tarea es correcto
-    if(nombreTarea==="" ){
-      contador ++
-      erroresDefinitivos.errorName = 'Introduce un nombre valido'
+    if(taskName==="" ){
+      cont ++
+      errorsUpdate.errorName = 'Introduce un nombre valido'
     }else{
-      erroresDefinitivos.errorName= ''
+      errorsUpdate.errorName= ''
     }
 
     //comprobar si la fecha de la tarea es correcto
-    if(fechaTarea===""){
-      contador++
-      erroresDefinitivos.errorDate= 'Introduce una fecha valida'
+    if(taskDate===""){
+      cont++
+      errorsUpdate.errorDate= 'Introduce una fecha valida'
     }else {
-      const hoy = new Date()
-      hoy.setHours(0, 0, 0, 0)
-      const fechaElegida = new Date(fechaTarea)
-      erroresDefinitivos.errorDate = ''
+      const today = new Date()
+      today.setHours(0, 0, 0, 0)
+      const dateSelected = new Date(taskDate)
+      errorsUpdate.errorDate = ''
 
       //comprobar que la fecha no sea anterior a la de hoy
-      if (fechaElegida < hoy) {
-        contador++
-        erroresDefinitivos.errorDate = 'La fecha no puede ser anterior a hoy'
+      if (dateSelected < today) {
+        cont++
+        errorsUpdate.errorDate = 'La fecha no puede ser anterior a hoy'
       }else{
-      erroresDefinitivos.errorDate = ''
+      errorsUpdate.errorDate = ''
       }
     }
     
     //actualizar si hay algun error
-    if(contador>0){
-      setErroresPopUpAddTask(erroresDefinitivos)
+    if(cont>0){
+      setErrorPopUpAddTask(errorsUpdate)
       sileo.error({
         title: "No se puede crear la tarea",
         fill: "#171717",
@@ -50,8 +51,8 @@ function PopUpItem ({setShowPopupAddTask, addTarea}) {
       return
     //llamar a la creación de tarea
     }else{
-      setErroresPopUpAddTask(erroresDefinitivos)
-      addTarea(nombreTarea, fechaTarea, descripcionTarea)
+      setErrorPopUpAddTask(errorsUpdate)
+      addTask(taskName, taskDate, taskDescription)
     }
   }
 
@@ -66,15 +67,15 @@ function PopUpItem ({setShowPopupAddTask, addTarea}) {
 
         <div className='popUpAdd__container--form'>
           <label>Nombre*</label>
-          <input type='text' className='todo-list__input popUpAdd__container--input' onInput={(event) => setNombreTarea(event.target.value)} placeholder='Introduce el nombre de tu tarea' required></input>
-          <span className='error__form'>{erroresPopUpAddTask.errorName}</span>
+          <input type='text' className='todo-list__input popUpAdd__container--input' onInput={(event) => setTaskName(event.target.value)} placeholder='Introduce el nombre de tu tarea' required></input>
+          <span className='error__form'>{errorPopUpAddTask.errorName}</span>
 
           <label>Fecha limite*</label>
-          <input type='date' className='todo-list__input popUpAdd__container--input' onInput={(event) => setFechaTarea(event.target.value)} required></input>
-          <span className='error__form'>{erroresPopUpAddTask.errorDate}</span>
+          <input type='date' className='todo-list__input popUpAdd__container--input' onInput={(event) => setTaskDate(event.target.value)} required></input>
+          <span className='error__form'>{errorPopUpAddTask.errorDate}</span>
 
           <label>Descripcion</label>
-          <input type='text' className='todo-list__input popUpAdd__container--input' onInput={(event) => setDescripcionTarea(event.target.value)} placeholder='Introduce una descripcion'></input>
+          <input type='text' className='todo-list__input popUpAdd__container--input' onInput={(event) => setTaskDescription(event.target.value)} placeholder='Introduce una descripcion'></input>
         </div>
 
         <button onClick={() => verifyInputs()} className='todo-list__button'>Añadir tarea</button>
