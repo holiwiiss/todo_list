@@ -2,11 +2,11 @@ import close_icon from '../assets/icon_close.png'
 import { useState } from 'react'
 import { sileo, Toaster } from "sileo";
 
-function PopUpItem ({setShowPopupAddTask, addTask}) {
+function PopUpItem ({closePopUp, addTask, editTask, taskEditing}) {
 
-  const [taskName, setTaskName] = useState('')
-  const [taskDate, setTaskDate] = useState('')
-  const [taskDescription, setTaskDescription] = useState('')
+  const [taskName, setTaskName] = useState(taskEditing?.name || '')
+  const [taskDate, setTaskDate] = useState(taskEditing?.date || '')
+  const [taskDescription, setTaskDescription] = useState(taskEditing?.description || '')
   const [errorPopUpAddTask, setErrorPopUpAddTask] = useState({errorName: '', errorDate: ''})
 
   const verifyInputs = () => {
@@ -52,33 +52,37 @@ function PopUpItem ({setShowPopupAddTask, addTask}) {
     //llamar a la creación de tarea
     }else{
       setErrorPopUpAddTask(errorsUpdate)
-      addTask(taskName, taskDate, taskDescription)
+      if (taskEditing) {
+        editTask(taskEditing.id, taskName, taskDate, taskDescription)
+      } else {
+        addTask(taskName, taskDate, taskDescription)
+      }
     }
   }
 
   return (
-    <div className='bg-blur' onClick={() => setShowPopupAddTask(false)}>
+    <div className='bg-blur' onClick={closePopUp}>
       <div className='popUpAdd__container' onClick={(e) => e.stopPropagation()}>
 
         <div className='popUpAdd__container--row'>
-          <h2 className='popUpAdd__container--title' >Añade tu tarea</h2>
-          <img src={close_icon} className='popUpAdd__container--close' onClick={() => setShowPopupAddTask(false)}></img>
+          <h2 className='popUpAdd__container--title'>{taskEditing ? 'Edita tu tarea' : 'Añade tu tarea'}</h2>
+          <img src={close_icon} className='popUpAdd__container--close' onClick={closePopUp}></img>
         </div>
 
         <div className='popUpAdd__container--form'>
           <label>Nombre*</label>
-          <input type='text' className='todo-list__input popUpAdd__container--input' onInput={(event) => setTaskName(event.target.value)} placeholder='Introduce el nombre de tu tarea' required></input>
+          <input type='text' className='todo-list__input popUpAdd__container--input' onInput={(event) => setTaskName(event.target.value)} value={taskName} placeholder='Introduce el nombre de tu tarea' required></input>
           <span className='error__form'>{errorPopUpAddTask.errorName}</span>
 
           <label>Fecha limite*</label>
-          <input type='date' className='todo-list__input popUpAdd__container--input' onInput={(event) => setTaskDate(event.target.value)} required></input>
+          <input type='date' className='todo-list__input popUpAdd__container--input' onInput={(event) => setTaskDate(event.target.value)} value={taskDate} required></input>
           <span className='error__form'>{errorPopUpAddTask.errorDate}</span>
 
           <label>Descripcion</label>
-          <input type='text' className='todo-list__input popUpAdd__container--input' onInput={(event) => setTaskDescription(event.target.value)} placeholder='Introduce una descripcion'></input>
+          <input type='text' className='todo-list__input popUpAdd__container--input' onInput={(event) => setTaskDescription(event.target.value)} value={taskDescription} placeholder='Introduce una descripcion'></input>
         </div>
 
-        <button onClick={() => verifyInputs()} className='todo-list__button'>Añadir tarea</button>
+        <button onClick={() => verifyInputs()} className='todo-list__button'>{taskEditing ? 'Guardar cambios' : 'Añadir tarea'}</button>
       </div>
     </div>
   )

@@ -13,11 +13,13 @@ function App() {
   const [searchWord, setSearchWord] = useState('')
   const [taskFilter, setTaskFilter] = useState('')
   const [showPopupAddTask, setShowPopupAddTask] = useState(false)
-  
+  const [taskEditing, setTaskEditing] = useState(null)
+  let count = 0
   const addTask = (name, date, description) => {
-    const newList = [...taskList, {name: name, complete:false, date: date, description: description}]
+    const newList = [...taskList, {id:count, name: name, complete:false, date: date, description: description}]
+    count++
     setTaskList(newList)
-    setShowPopupAddTask(false)
+    closePopUp()
     sileo.success({ 
       title: "Tarea añadida",
       fill: "#171717",
@@ -36,15 +38,28 @@ function App() {
     });
   }
 
-  const editTask = (event, taskIndex, newName) => {
+  const openEditTask = (event, taskIndex) => {
     event.stopPropagation()
+    setTaskEditing(taskList[taskIndex])
+    setShowPopupAddTask(true)
+  }
+
+  const editTask = (id, newTaskName, newTaskDate, newTaskDescription) => {
+    
     const listUpdate = [...taskList]
-    listUpdate[taskIndex].name =  newName
+    const taskEdit =  {id:id, name: newTaskName, complete:false, date: newTaskDate, description: newTaskDescription}
+    listUpdate[id] =  taskEdit
     setTaskList(listUpdate)
+    closePopUp()
     sileo.success({ 
       title: "Tarea editada",
       fill: "#171717",
     });
+  }
+
+  const closePopUp = () => {
+  setShowPopupAddTask(false)
+  setTaskEditing(null)
   }
 
   const deleteAllTasks = () => {
@@ -75,7 +90,6 @@ function App() {
     }
     setSearchWord(word)
     setTaskFilter('buscador')
-    
   }
 
   return (
@@ -107,7 +121,7 @@ function App() {
               if (taskFilter === "buscador") return (task.name).startsWith(searchWord);
               return true;
             }).map((task, index) => (
-          <TaskItem taskName={task.name} taskComplete={task.complete} taskDate={task.date} taskDescription={task.description} taskIndex={index} deleteTask={deleteTask} editTask={editTask} toggleStatusTask={toggleStatusTask}></TaskItem>
+          <TaskItem taskName={task.name} taskComplete={task.complete} taskDate={task.date} taskDescription={task.description} taskIndex={index} deleteTask={deleteTask} openEditTask={openEditTask} toggleStatusTask={toggleStatusTask}></TaskItem>
         ))}</ul>)}
 
         <button className='todo-list__delete--button todo-list__button' onClick={() => deleteAllTasks()}>Borrar todas las tareas ({taskList.length})</button>
@@ -115,7 +129,13 @@ function App() {
       </div>
 
       {showPopupAddTask && (
-        <PopUpItem setShowPopupAddTask={setShowPopupAddTask} addTask={addTask}></PopUpItem>
+        <PopUpItem 
+          closePopUp = {closePopUp} 
+          addTask={addTask} 
+          editTask={editTask}
+          taskEditing={taskEditing}
+        >
+        </PopUpItem>
       )}
 
       <Toaster position="top-right" />

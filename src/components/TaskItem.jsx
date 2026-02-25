@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-function TaskItem({taskName,taskComplete,taskDate, taskDescription, taskIndex, deleteTask, editTask, toggleStatusTask}){
+function TaskItem({taskName,taskComplete,taskDate, taskDescription, taskIndex, deleteTask, openEditTask, toggleStatusTask}){
 
   return (
     <li key={taskIndex} onClick={() => toggleStatusTask(taskIndex)} className={`todo-list__task ${taskComplete ? 'todo-list__task--completed' : ''}`}>
@@ -15,7 +15,7 @@ function TaskItem({taskName,taskComplete,taskDate, taskDescription, taskIndex, d
         </div>
       </div>
       <div className='todo-list__task-buttons'>
-        <button onClick={(event) => editTask(event, taskIndex, 'sacar la basura')} className='todo-list__button'>Editar</button>
+        <button onClick={(event) => openEditTask(event, taskIndex, 'sacar la basura')} className='todo-list__button'>Editar</button>
         <button onClick={(event) => deleteTask(event, taskIndex)} className='todo-list__button'>Borrar</button>
       </div>
     </li>
