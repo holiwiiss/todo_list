@@ -1,6 +1,6 @@
 import close_icon from '../assets/icon_close.png'
 import { useState } from 'react'
-import { sileo, Toaster } from "sileo";
+import { sileo} from "sileo";
 
 function PopUpItem ({closePopUp, addTask, editTask, taskEditing}) {
 

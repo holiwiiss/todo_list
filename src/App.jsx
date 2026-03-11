@@ -15,7 +15,9 @@ function App() {
   const [showPopupAddTask, setShowPopupAddTask] = useState(false)
   const [taskEditing, setTaskEditing] = useState(null)
   let count = 0
+
   const addTask = (name, date, description) => {
+    
     const newList = [...taskList, {id:count, name: name, complete:false, date: date, description: description}]
     count++
     setTaskList(newList)
